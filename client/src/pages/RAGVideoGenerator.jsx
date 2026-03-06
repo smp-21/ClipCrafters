@@ -153,6 +153,7 @@ export default function RAGVideoGenerator() {
       await axios.patch(`${API_URL}/scenes/${sceneId}/narration?project_id=${currentDocId}&narration=${encodeURIComponent(narration)}`);
       toast.info('Narration saved!');
       updateSceneInState(sceneId, { audio_status: 'outdated', clip_status: 'outdated' });
+      setShowFastRebuild(true); // Show rebuild button when scene is updated
     } catch (err) {
       toast.error(`Failed to save narration: ${err.message}`);
     }
@@ -163,6 +164,7 @@ export default function RAGVideoGenerator() {
       await axios.patch(`${API_URL}/scenes/${sceneId}/prompt?project_id=${currentDocId}&prompt=${encodeURIComponent(prompt)}`);
       toast.info('Prompt saved!');
       updateSceneInState(sceneId, { image_status: 'outdated', clip_status: 'outdated' });
+      setShowFastRebuild(true); // Show rebuild button when scene is updated
     } catch (err) {
       toast.error(`Failed to save prompt: ${err.message}`);
     }
@@ -245,6 +247,7 @@ export default function RAGVideoGenerator() {
       setStoryboardStatus({ loading: true, text: 'Concatenating all clips into final movie...' });
       await axios.post(`${API_URL}/projects/${currentDocId}/render-final-video`);
       setFinalVideo(`${API_URL}/projects/${currentDocId}/video?t=${Date.now()}`);
+      setShowFastRebuild(false); // Hide rebuild button after successful render
       toast.success('Final movie render successful! 🎞');
       setStoryboardStatus({ loading: false, text: '' });
     } catch (err) {
@@ -258,11 +261,35 @@ export default function RAGVideoGenerator() {
       setStoryboardStatus({ loading: true, text: 'Rapidly rebuilding video from cached clips...' });
       await axios.post(`${API_URL}/projects/${currentDocId}/rebuild-video`);
       setFinalVideo(`${API_URL}/projects/${currentDocId}/video?t=${Date.now()}`);
+      setShowFastRebuild(false); // Hide rebuild button after successful rebuild
       toast.success('Fast rebuild successful! ⚡');
       setStoryboardStatus({ loading: false, text: '' });
     } catch (err) {
       toast.error(`Rebuild failed: ${err.response?.data?.detail || err.message}`);
       setStoryboardStatus({ loading: false, text: '' });
+    }
+  };
+
+  const handleDownloadVideo = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/projects/${currentDocId}/video`, {
+        responseType: 'blob',
+      });
+      
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data], { type: 'video/mp4' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `video_${currentDocId}_${Date.now()}.mp4`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Video downloaded successfully!');
+    } catch (err) {
+      toast.error(`Download failed: ${err.response?.data?.detail || err.message}`);
     }
   };
 
@@ -542,6 +569,7 @@ export default function RAGVideoGenerator() {
               onAssembleClips={handleAssembleClips}
               onRenderFinal={handleRenderFinal}
               onFastRebuild={handleFastRebuild}
+              onDownloadVideo={handleDownloadVideo}
               onSaveNarration={handleSaveNarration}
               onSavePrompt={handleSavePrompt}
               onAnalyzeVisual={handleAnalyzeVisual}
@@ -560,7 +588,7 @@ export default function RAGVideoGenerator() {
 }
 
 // ── Storyboard Section Component ──────────────────────────────────────
-function StoryboardSection({ scenes, currentDocId, storyboardStatus, finalVideo, showFastRebuild, onGenerateStoryboard, onAssembleClips, onRenderFinal, onFastRebuild, onSaveNarration, onSavePrompt, onAnalyzeVisual, onGenerateAudio, onGenerateImage, onGenerateClip, setFinalVideo }) {
+function StoryboardSection({ scenes, currentDocId, storyboardStatus, finalVideo, showFastRebuild, onGenerateStoryboard, onAssembleClips, onRenderFinal, onFastRebuild, onDownloadVideo, onSaveNarration, onSavePrompt, onAnalyzeVisual, onGenerateAudio, onGenerateImage, onGenerateClip, setFinalVideo }) {
   const [selectedSceneIndex, setSelectedSceneIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('script');
   const [editedNarration, setEditedNarration] = useState('');
@@ -706,12 +734,14 @@ function StoryboardSection({ scenes, currentDocId, storyboardStatus, finalVideo,
                 </button>
               </div>
             )}
-            <audio
-              id={`audio-${selectedScene.scene_id}`}
-              src={selectedScene.audio_status === 'ready' ? `${API_URL}/assets/${currentDocId}/audio/${selectedScene.scene_id}.mp3?t=${Date.now()}` : ''}
-              className="hidden"
-              onLoadedMetadata={handleAudioLoad}
-            />
+            {selectedScene.audio_status === 'ready' && (
+              <audio
+                id={`audio-${selectedScene.scene_id}`}
+                src={`${API_URL}/assets/${currentDocId}/audio/${selectedScene.scene_id}.mp3?t=${Date.now()}`}
+                className="hidden"
+                onLoadedMetadata={handleAudioLoad}
+              />
+            )}
 
             {/* Visual Description */}
             <div className="mt-4">
@@ -1066,20 +1096,47 @@ function StoryboardSection({ scenes, currentDocId, storyboardStatus, finalVideo,
             <div className="w-10 h-10 rounded-full bg-[var(--gold-primary)] flex items-center justify-center text-lg font-bold text-black">
               ✓
             </div>
-            <div>
+            <div className="flex-1">
               <h3 className="text-xl font-display font-bold">Final Video Export Ready</h3>
               <p className="text-sm text-[var(--text-secondary)]">Your video has been successfully rendered</p>
             </div>
+            {showFastRebuild && (
+              <button 
+                onClick={onFastRebuild}
+                disabled={storyboardStatus.loading}
+                className="flex items-center gap-2 px-4 py-2 bg-orange-500/20 text-orange-400 border border-orange-500/40 rounded-lg hover:opacity-90 transition-all font-semibold text-sm disabled:opacity-50"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Rebuild Video
+              </button>
+            )}
           </div>
+          
+          {storyboardStatus.loading && (
+            <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+                <span className="text-sm text-blue-400">{storyboardStatus.text}</span>
+              </div>
+            </div>
+          )}
+          
           <video src={finalVideo} controls className="w-full rounded-lg bg-black mb-4" />
+          
           <div className="flex gap-3">
-            <a href={finalVideo} download className="btn-primary">
+            <button 
+              onClick={onDownloadVideo}
+              className="btn-primary"
+            >
               <Download className="w-4 h-4" />
               Download MP4
-            </a>
-            <button onClick={() => setFinalVideo(`${finalVideo.split('?')[0]}?t=${Date.now()}`)} className="btn-secondary">
+            </button>
+            <button 
+              onClick={() => setFinalVideo(`${finalVideo.split('?')[0]}?t=${Date.now()}`)} 
+              className="btn-secondary"
+            >
               <RefreshCw className="w-4 h-4" />
-              Refresh
+              Refresh Preview
             </button>
           </div>
         </div>
