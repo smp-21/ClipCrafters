@@ -1,123 +1,65 @@
-<<<<<<< HEAD
-# 🎬 ClipCrafters — AI Agentic Video Editing System
+<div align="center">
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-4.x-blue)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-8.x-brightgreen)](https://mongodb.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+# 🎬 ClipCrafters — Backend API
 
-> Upload research papers, lecture notes, or raw text — ClipCrafters' AI pipeline generates a full video with scenes, voiceovers, and visuals. Every scene is independently editable.
+### Node.js + Express REST API for AI Video Platform
 
----
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)](https://mongodb.com)
 
-## 🏗️ Tech Stack
+[Main Docs](../README.md) · [Frontend Docs](../client/README.md) · [API Docs](http://localhost:5001/api/docs)
 
-| Layer | Technology |
-|---|---|
-| Backend API | Node.js + Express.js |
-| Database | MongoDB + Mongoose |
-| AI Pipeline | FastAPI (Python) |
-| Frontend | React (MERN) |
-| Auth | JWT (jsonwebtoken) |
-| File Uploads | Multer |
-| AI HTTP Client | Axios |
-| Security | Helmet + CORS + Rate Limiting |
+</div>
 
 ---
 
-## 📁 Folder Structure
+## Table of Contents
 
-```
-server/
-├── server.js               # Entry point (connects DB, starts server)
-├── .env                    # Local secrets (git-ignored)
-├── .env.example            # Template
-└── src/
-    ├── app.js              # Express app factory
-    ├── config/
-    │   ├── database.js     # Mongoose connection
-    │   └── env.js          # Validated env config
-    ├── constants/
-    │   └── roles.js
-    ├── controllers/        # HTTP layer — thin, delegates to services
-    │   ├── auth.controller.js
-    │   ├── project.controller.js
-    │   ├── video.controller.js
-    │   ├── scene.controller.js
-    │   └── edit.controller.js
-    ├── middlewares/
-    │   ├── auth.middleware.js      # JWT protect + RBAC restrictTo
-    │   ├── error.middleware.js     # Global error + 404 handler
-    │   ├── upload.middleware.js    # Multer disk storage
-    │   └── rateLimit.middleware.js # API + auth rate limits
-    ├── models/             # Mongoose schemas
-    │   ├── User.js
-    │   ├── Project.js
-    │   ├── Video.js
-    │   ├── Scene.js
-    │   ├── EditHistory.js
-    │   └── AIGeneration.js
-    ├── routes/
-    │   ├── auth.routes.js
-    │   ├── project.routes.js
-    │   ├── video.routes.js
-    │   ├── scene.routes.js
-    │   └── edit.routes.js
-    ├── services/           # Business logic
-    │   ├── auth.service.js
-    │   ├── project.service.js
-    │   ├── video.service.js
-    │   ├── scene.service.js
-    │   └── ai.service.js   # FastAPI communication
-    ├── utils/
-    │   ├── asyncHandler.js
-    │   ├── apiResponse.js
-    │   └── logger.js
-    └── validators/
-        ├── auth.validator.js
-        └── project.validator.js
-=======
-# ClipCrafters — Node.js Backend API
-
-> Express.js REST API for the ClipCrafters AI Video Platform
-
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-5-000000?logo=express)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb)](https://mongodb.com)
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Folder Structure](#folder-structure)
-- [Setup & Run](#setup--run)
-- [Environment Variables](#environment-variables)
-- [All API Endpoints](#all-api-endpoints)
-  - [Auth APIs](#1-auth-apis)
-  - [Project APIs](#2-project-apis)
-  - [Video APIs](#3-video-apis)
-  - [Scene APIs](#4-scene-apis)
-  - [Edit History APIs](#5-edit-history-apis)
-  - [System APIs](#6-system-apis)
-- [Request & Response Examples](#request--response-examples)
-- [Middlewares](#middlewares)
-- [Error Handling](#error-handling)
-- [Models](#models)
+1. [Overview](#overview)
+2. [Tech Stack](#tech-stack)
+3. [Folder Structure](#folder-structure)
+4. [Setup & Run](#setup--run)
+5. [Environment Variables](#environment-variables)
+6. [API Endpoints](#api-endpoints)
+7. [Authentication](#authentication)
+8. [Security Features](#security-features)
+9. [Database Models](#database-models)
+10. [Error Handling](#error-handling)
+11. [Testing](#testing)
 
 ---
 
 ## Overview
 
-This is the backend service for ClipCrafters. It:
+The ClipCrafters backend is a RESTful API built with Node.js and Express.js. It handles:
 
-- Handles user auth (JWT access + refresh tokens, OTP email verification)
-- Manages projects, videos, scenes, and edit history via MongoDB
-- Proxies AI generation requests to the FastAPI service
-- Stores assets on Cloudinary
-- Sends transactional emails via Resend
+- User authentication (JWT with access + refresh tokens)
+- Project and video management
+- AI service integration (FastAPI communication)
+- Cloud storage (Cloudinary)
+- Email notifications (Resend)
+- OTP verification
+- Edit history tracking
 
 **Base URL (dev):** `http://localhost:5001/api`
+
+---
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|---|---|---|
+| **Node.js** | 18 LTS | JavaScript runtime |
+| **Express.js** | 4.x | Web framework |
+| **MongoDB** | Atlas | NoSQL database |
+| **Mongoose** | 7.x | MongoDB ODM |
+| **JWT** | 9.x | Authentication tokens |
+| **Bcrypt** | 5.x | Password hashing |
+| **Cloudinary** | Latest | Media storage & CDN |
+| **Resend** | Latest | Transactional emails |
+| **Helmet** | Latest | Security headers |
+| **Morgan** | Latest | HTTP request logging |
 
 ---
 
@@ -125,118 +67,118 @@ This is the backend service for ClipCrafters. It:
 
 ```
 server/
-├── server.js                   # Entry point — creates HTTP server
-├── src/
-│   ├── app.js                  # Express app setup (CORS, middleware, routes)
-│   ├── config/
-│   │   ├── db.js               # MongoDB connection
-│   │   └── env.js              # Validated env vars
-│   ├── constants/
-│   │   └── messages.js         # Shared response strings
-│   ├── controllers/
-│   │   ├── auth.controller.js  # register, login, getMe, sendOtp, verifyOtp
-│   │   ├── project.controller.js
-│   │   ├── video.controller.js
-│   │   ├── scene.controller.js
-│   │   └── edit.controller.js
-│   ├── middlewares/
-│   │   ├── auth.middleware.js  # JWT protect()
-│   │   ├── error.middleware.js # Global error handler + notFound
-│   │   ├── rateLimit.middleware.js
-│   │   └── upload.middleware.js # Multer for file uploads
-│   ├── models/
-│   │   ├── User.model.js
-│   │   ├── Project.model.js
-│   │   ├── Video.model.js
-│   │   ├── Scene.model.js
-│   │   ├── EditHistory.model.js
-│   │   ├── OTP.model.js
-│   │   ├── RefreshToken.model.js
-│   │   └── AuditLog.model.js
-│   ├── routes/
-│   │   ├── auth.routes.js
-│   │   ├── project.routes.js
-│   │   ├── video.routes.js
-│   │   ├── scene.routes.js
-│   │   └── edit.routes.js
-│   ├── services/
-│   │   ├── ai.service.js       # FastAPI calls
-│   │   ├── auth.service.js
-│   │   ├── cloudinary.service.js
-│   │   ├── email.service.js    # Resend
-│   │   ├── otp.service.js
-│   │   ├── project.service.js
-│   │   ├── refreshToken.service.js
-│   │   └── video.service.js
-│   ├── utils/
-│   │   ├── logger.js           # Winston logger
-│   │   ├── response.js         # Unified response helpers
-│   │   └── token.js            # JWT sign/verify
-│   └── validators/
-│       ├── auth.validator.js
-│       └── project.validator.js
-├── package.json
-└── .env                        # Not committed — see below
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
+├── server.js                   # Entry point — HTTP server
+├── .env                        # Environment variables (git-ignored)
+├── .env.example                # Environment template
+└── src/
+    ├── app.js                  # Express app factory
+    ├── config/
+    │   ├── db.js               # MongoDB connection
+    │   └── env.js              # Validated env config
+    ├── constants/
+    │   └── messages.js         # Response messages
+    ├── controllers/            # HTTP request handlers
+    │   ├── auth.controller.js
+    │   ├── project.controller.js
+    │   ├── video.controller.js
+    │   ├── scene.controller.js
+    │   └── edit.controller.js
+    ├── middlewares/
+    │   ├── auth.middleware.js      # JWT verification
+    │   ├── error.middleware.js     # Global error handler
+    │   ├── upload.middleware.js    # Multer file uploads
+    │   └── rateLimit.middleware.js # Rate limiting
+    ├── models/                 # Mongoose schemas
+    │   ├── User.js
+    │   ├── Project.js
+    │   ├── Video.js
+    │   ├── Scene.js
+    │   ├── EditHistory.js
+    │   ├── OTP.js
+    │   ├── RefreshToken.js
+    │   ├── AIGeneration.js
+    │   └── AuditLog.js
+    ├── routes/                 # Route definitions
+    │   ├── auth.routes.js
+    │   ├── project.routes.js
+    │   ├── video.routes.js
+    │   ├── scene.routes.js
+    │   └── edit.routes.js
+    ├── services/               # Business logic
+    │   ├── auth.service.js
+    │   ├── ai.service.js           # FastAPI integration
+    │   ├── cloudinary.service.js
+    │   ├── email.service.js        # Resend integration
+    │   ├── otp.service.js
+    │   ├── project.service.js
+    │   ├── refreshToken.service.js
+    │   └── video.service.js
+    ├── utils/
+    │   ├── asyncHandler.js         # Async error wrapper
+    │   ├── apiResponse.js          # Response formatter
+    │   ├── logger.js               # Winston logger
+    │   └── token.js                # JWT utilities
+    └── validators/             # Request validation
+        ├── auth.validator.js
+        └── project.validator.js
 ```
 
 ---
 
-<<<<<<< HEAD
-## 🚀 Getting Started
-
-### 1. Install dependencies
-=======
 ## Setup & Run
 
 ### Prerequisites
-- Node.js ≥ 18
-- MongoDB Atlas URI
 
-### Install
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
+- Node.js ≥ 18 LTS
+- MongoDB Atlas account
+- Cloudinary account
+- Resend account (for emails)
+
+### Install Dependencies
 
 ```bash
 cd server
 npm install
 ```
 
-<<<<<<< HEAD
-### 2. Configure environment
+### Configure Environment
 
 ```bash
+cd server
 cp .env.example .env
-# Fill in MONGO_URI, JWT_SECRET, FASTAPI_URL, etc.
+# Edit .env with your credentials
 ```
 
-### 3. Start development server
+> **Important:** Never commit `.env` to version control. It's already in `.gitignore`.
+
+See [Environment Variables](#environment-variables) section for all required and optional variables.
+
+### Development Server
 
 ```bash
 npm run dev
 ```
 
-### 4. Health check
+Server starts on **http://localhost:5001**
 
-```
-GET http://localhost:5000/api/health
-=======
-### Run
+### Production Server
 
 ```bash
-# Development (hot reload)
-npm run dev
-
-# Production
 npm start
 ```
-
-Server starts on **port 5001** (configurable via `PORT` env var).
 
 ---
 
 ## Environment Variables
 
-Create `server/.env`:
+Copy the example file and configure with your credentials:
+
+```bash
+cd server
+cp .env.example .env
+```
+
+Edit `server/.env` with your actual values:
 
 ```env
 # ── Server ─────────────────────────────────
@@ -244,23 +186,28 @@ PORT=5001
 NODE_ENV=development
 
 # ── Database ───────────────────────────────
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/clipcrafters
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/clipcrafters
 
-# ── JWT ────────────────────────────────────
-JWT_SECRET=your_jwt_secret_min_32_chars
+# ── JWT & Tokens ───────────────────────────
+JWT_SECRET=your_super_secret_jwt_key_min_32_chars
 JWT_EXPIRES_IN=7d
-ACCESS_TOKEN_SECRET=your_access_secret
+ACCESS_TOKEN_SECRET=generate_random_32_char_string
 ACCESS_TOKEN_EXPIRY=1d
-REFRESH_TOKEN_SECRET=your_refresh_secret
+REFRESH_TOKEN_SECRET=generate_random_32_char_string
 REFRESH_TOKEN_EXPIRY=7d
+VERIFICATION_TOKEN_SECRET=generate_random_32_char_string
 
 # ── Security ───────────────────────────────
 BCRYPT_SALT_ROUNDS=10
+PASSWORD_EXPIRY_DAYS=30
+PASSWORD_REMINDER_DAYS_BEFORE=5
 
 # ── CORS ───────────────────────────────────
-# Accepts any localhost port automatically in dev
-# Set explicit origins for production:
-# CORS_ORIGIN=https://yourdomain.com,https://www.yourdomain.com
+CORS_ORIGIN=http://localhost:5173,http://localhost:3000
+
+# ── Rate Limiting ──────────────────────────
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
 
 # ── FastAPI AI Service ──────────────────────
 FASTAPI_URL=http://localhost:8000
@@ -269,112 +216,86 @@ FASTAPI_URL=http://localhost:8000
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+CLOUDINARY_FOLDER=clipcrafters
+
+# ── Twilio SMS (optional) ──────────────────
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
 
 # ── Resend Email ───────────────────────────
-RESEND_API_KEY=re_xxxxxxxxxxxx
-EMAIL_FROM=ClipCrafters <no-reply@yourdomain.com>
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+EMAIL_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+EMAIL_API_URL=https://api.resend.com/emails
+EMAIL_FROM=ClipCrafters <no-reply@clipcrafters.app>
 RESEND_VERIFIED_EMAIL=your_verified@email.com
 
 # ── OTP ────────────────────────────────────
 OTP_EXPIRY_MINUTES=5
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
+
+# ── File Uploads ───────────────────────────
+MAX_FILE_SIZE=10485760
+
+# ── Third-party AI (optional) ──────────────
+OPENAI_API_KEY=sk-...
+ELEVENLABS_API_KEY=your_key
+```
+
+### Required Variables
+
+| Variable | Description | Example |
+|---|---|---|
+| `MONGO_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/clipcrafters` |
+| `JWT_SECRET` | Secret for JWT signing (min 32 chars) | Generate with `openssl rand -base64 32` |
+| `ACCESS_TOKEN_SECRET` | Access token secret | Generate with `openssl rand -base64 32` |
+| `REFRESH_TOKEN_SECRET` | Refresh token secret | Generate with `openssl rand -base64 32` |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | From Cloudinary dashboard |
+| `CLOUDINARY_API_KEY` | Cloudinary API key | From Cloudinary dashboard |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | From Cloudinary dashboard |
+| `RESEND_API_KEY` | Resend API key for emails | From Resend dashboard |
+
+### Optional Variables
+
+| Variable | Description | Default |
+|---|---|---|
+| `PORT` | Server port | `5001` |
+| `NODE_ENV` | Environment mode | `development` |
+| `CORS_ORIGIN` | Allowed origins (comma-separated) | `http://localhost:5173` |
+| `BCRYPT_SALT_ROUNDS` | Bcrypt salt rounds | `10` |
+| `OTP_EXPIRY_MINUTES` | OTP expiration time | `5` |
+| `RATE_LIMIT_MAX_REQUESTS` | Max requests per window | `100` |
+
+### Generate Secure Secrets
+
+```bash
+# Generate JWT secrets (run 3 times for different secrets)
+openssl rand -base64 32
+
+# Or use Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
 ---
 
-<<<<<<< HEAD
-## 📡 API Reference
+## API Endpoints
 
 ### Authentication — `/api/auth`
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/register` | ❌ | Create user account |
-| POST | `/login` | ❌ | Login, returns JWT |
-| GET | `/me` | ✅ | Get own profile |
+| `POST` | `/register` | ❌ | Create user account |
+| `POST` | `/login` | ❌ | Login, returns JWT |
+| `GET` | `/me` | ✅ | Get current user profile |
+| `POST` | `/send-otp` | ✅ | Send OTP to email |
+| `POST` | `/verify-otp` | ✅ | Verify OTP code |
+| `POST` | `/forgot-password` | ❌ | Request password reset |
+| `POST` | `/reset-password` | ❌ | Reset password with token |
 
-**Register**
-```json
+**Example: Register**
+```bash
 POST /api/auth/register
-{
-  "name": "Fenil Chodvadiya",
-  "email": "fenil@example.com",
-  "password": "securePass123"
-}
-```
+Content-Type: application/json
 
-**Login**
-```json
-POST /api/auth/login
-{
-  "email": "fenil@example.com",
-  "password": "securePass123"
-}
-// Response: { "token": "eyJ...", "user": { ... } }
-```
-
----
-
-### Projects — `/api/projects`
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/create` | Create a new project |
-| GET | `/` | List user's projects (paginated) |
-| GET | `/:id` | Get project with videos populated |
-| PUT | `/:id` | Update project |
-| DELETE | `/:id` | Delete project |
-
-**Create Project**
-```json
-POST /api/projects/create
-Authorization: Bearer <token>
-{
-  "title": "My Research Paper",
-  "description": "Converts paper to video",
-  "sourceType": "research-paper"
-}
-```
-
----
-
-### Videos — `/api/videos`
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/generate` | Submit text → start AI generation |
-| POST | `/upload` | Upload file → start AI generation |
-| GET | `/:id` | Get video with scenes |
-
-**Generate from text**
-```json
-POST /api/videos/generate
-Authorization: Bearer <token>
-{
-  "text": "Attention is all you need...",
-  "projectId": "64abc...",
-  "title": "Attention Paper Video"
-}
-// Response: 202 Accepted — video stub returned, generation runs async
-=======
-## All API Endpoints
-
-### 1. Auth APIs
-
-**Base:** `/api/auth`  
-Rate limited to **10 requests / 15 min** per IP on login & register.
-
----
-
-#### `POST /api/auth/register`
-
-Register a new user account.
-
-**Auth required:** No  
-**Rate limited:** Yes
-
-**Request Body:**
-```json
 {
   "name": "Fenil Chodvadiya",
   "email": "fenil@example.com",
@@ -382,7 +303,7 @@ Register a new user account.
 }
 ```
 
-**Success Response `201`:**
+**Response:**
 ```json
 {
   "success": true,
@@ -393,523 +314,274 @@ Register a new user account.
       "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
       "name": "Fenil Chodvadiya",
       "email": "fenil@example.com",
-      "isVerified": false,
-      "createdAt": "2026-03-05T18:00:00.000Z"
+      "isVerified": false
     }
   }
 }
 ```
 
-**Error Responses:**
-- `400` — Validation failed (missing/invalid fields)
-- `409` — Email already registered
-- `429` — Too many requests
-
 ---
 
-#### `POST /api/auth/login`
+### Projects — `/api/projects`
 
-Login with email and password.
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/create` | ✅ | Create new project |
+| `GET` | `/` | ✅ | List user's projects |
+| `GET` | `/:id` | ✅ | Get project details |
+| `PUT` | `/:id` | ✅ | Update project |
+| `DELETE` | `/:id` | ✅ | Delete project |
 
-**Auth required:** No  
-**Rate limited:** Yes
-
-**Request Body:**
-```json
-{
-  "email": "fenil@example.com",
-  "password": "SecurePass@123"
-}
-```
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "user": {
-      "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
-      "name": "Fenil Chodvadiya",
-      "email": "fenil@example.com"
-    }
-  }
-}
-```
-
-**Error Responses:**
-- `400` — Validation failed
-- `401` — Invalid credentials
-- `429` — Rate limited
-
----
-
-#### `GET /api/auth/me`
-
-Get the currently authenticated user's profile.
-
-**Auth required:** ✅ `Authorization: Bearer <token>`
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
-      "name": "Fenil Chodvadiya",
-      "email": "fenil@example.com",
-      "isVerified": true
-    }
-  }
-}
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
-```
-
----
-
-<<<<<<< HEAD
-### Scenes — `/api/scenes`
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/video/:videoId` | Get all scenes ordered by sceneNumber |
-| PUT | `/:sceneId` | Edit a scene (auto-records EditHistory) |
-
-**Update Scene**
-```json
-PUT /api/scenes/:sceneId
+**Example: Create Project**
+```bash
+POST /api/projects/create
 Authorization: Bearer <token>
+Content-Type: application/json
+
 {
-  "editType": "script",
-  "scriptText": "Updated narration text here."
-=======
-#### `POST /api/auth/send-otp`
-
-Send a 6-digit OTP to the user's email for verification.
-
-**Auth required:** ✅  
-**Rate limited:** Yes
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "message": "OTP sent to your email"
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
-}
-```
-
----
-
-<<<<<<< HEAD
-### Edit History — `/api/edits`
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/create` | Manually log an edit |
-| GET | `/scene/:sceneId` | Get full edit history for a scene |
-
----
-
-## 🔐 Authentication
-
-All protected routes require:
-```
-Authorization: Bearer <JWT_TOKEN>
-```
-
-Token is returned on `/api/auth/login` and `/api/auth/register`.
-
----
-
-## 🛡️ Security Features
-
-- **Helmet** — HTTP security headers
-- **CORS** — Origin-whitelisted via `CORS_ORIGIN` env var
-- **Rate Limiting** — 100 req/15min globally, 10 req/15min on auth routes
-- **JWT** — Stateless auth, `select: false` on passwords
-- **Input Validation** — Schema-based validators before controllers
-
----
-
-## 🤖 AI Pipeline
-
-```
-User Input
-  ↓
-POST /api/videos/generate
-  ↓
-Video stub created (status: processing)
-  ↓
-[Background] FastAPI /generate-script
-  ↓
-[Background] FastAPI /generate-scenes
-  ↓
-Scenes saved to DB
-  ↓
-Video status → completed
-  ↓
-Every AI call logged in AIGeneration collection
-=======
-#### `POST /api/auth/verify-otp`
-
-Verify the OTP sent to email.
-
-**Auth required:** ✅
-
-**Request Body:**
-```json
-{
-  "otp": "482951"
-}
-```
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "message": "Email verified successfully"
-}
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
-```
-
----
-
-<<<<<<< HEAD
-## 📦 Environment Variables
-
-See `.env.example` for the full list.
-
-| Variable | Required | Description |
-|---|---|---|
-| `MONGO_URI` | ✅ | MongoDB connection string |
-| `JWT_SECRET` | ✅ | Secret for signing tokens |
-| `FASTAPI_URL` | ✅ | AI service base URL |
-| `PORT` | ❌ | Server port (default: 5000) |
-| `CORS_ORIGIN` | ❌ | Allowed frontend origin |
-| `MAX_FILE_SIZE` | ❌ | Upload size limit in bytes |
-=======
-### 2. Project APIs
-
-**Base:** `/api/projects`  
-**Auth required:** ✅ All routes
-
----
-
-#### `POST /api/projects/create`
-
-Create a new video project.
-
-**Request Body:**
-```json
-{
-  "title": "My Product Demo",
-  "topic": "A 60-second explainer about our SaaS analytics platform",
+  "title": "Product Demo Video",
+  "topic": "Explain our SaaS analytics platform",
   "style": "professional",
   "duration": 60
 }
 ```
 
-**Success Response `201`:**
-```json
-{
-  "success": true,
-  "data": {
-    "project": {
-      "_id": "65f2b3c4d5e6f7a8b9c0d2e3",
-      "userId": "65f1a2b3c4d5e6f7a8b9c0d1",
-      "title": "My Product Demo",
-      "topic": "A 60-second explainer...",
-      "status": "draft",
-      "createdAt": "2026-03-05T18:00:00.000Z"
-    }
-  }
-}
-```
-
 ---
 
-#### `GET /api/projects`
+### Videos — `/api/videos`
 
-Get all projects belonging to the authenticated user.
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/generate` | ✅ | Generate video from text |
+| `POST` | `/upload` | ✅ | Upload video file |
+| `GET` | `/:id` | ✅ | Get video details |
+| `DELETE` | `/:id` | ✅ | Delete video |
+| `GET` | `/:id/download` | ✅ | Download video |
 
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "projects": [
-      {
-        "_id": "65f2b3c4d5e6f7a8b9c0d2e3",
-        "title": "My Product Demo",
-        "status": "draft",
-        "videoId": null,
-        "createdAt": "2026-03-05T18:00:00.000Z"
-      }
-    ],
-    "total": 1
-  }
-}
-```
+**Example: Generate Video**
+```bash
+POST /api/videos/generate
+Authorization: Bearer <token>
+Content-Type: application/json
 
----
-
-#### `GET /api/projects/:id`
-
-Get a single project by ID.
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "project": { ... }
-  }
-}
-```
-
-**Error:** `404` if not found or not owned by user.
-
----
-
-#### `PUT /api/projects/:id`
-
-Update a project's title, topic, or style.
-
-**Request Body (partial):**
-```json
-{
-  "title": "Updated Title",
-  "status": "processing"
-}
-```
-
----
-
-#### `DELETE /api/projects/:id`
-
-Permanently delete a project and its associated video/scenes.
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "message": "Project deleted successfully"
-}
-```
-
----
-
-### 3. Video APIs
-
-**Base:** `/api/videos`  
-**Auth required:** ✅ All routes
-
----
-
-#### `POST /api/videos/generate`
-
-Trigger AI video generation for a project. Calls FastAPI internally.
-
-**Request Body:**
-```json
 {
   "projectId": "65f2b3c4d5e6f7a8b9c0d2e3"
 }
 ```
 
-**Success Response `200`:**
-```json
+---
+
+### Scenes — `/api/scenes`
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/video/:videoId` | ✅ | Get all scenes for video |
+| `PUT` | `/:sceneId` | ✅ | Update scene |
+| `DELETE` | `/:sceneId` | ✅ | Delete scene |
+
+---
+
+### Edit History — `/api/edits`
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/create` | ✅ | Log an edit action |
+| `GET` | `/scene/:sceneId` | ✅ | Get scene edit history |
+
+---
+
+### System
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/health` | ❌ | Health check |
+
+---
+
+## Authentication
+
+### JWT Flow
+
+1. User logs in with email/password
+2. Server validates credentials
+3. Server generates JWT access token
+4. Client stores token in localStorage
+5. Client includes token in `Authorization` header for protected routes
+
+### Protected Routes
+
+All routes except `/auth/login`, `/auth/register`, and `/health` require authentication:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Token Expiration
+
+- Access tokens expire in 1 day (configurable)
+- Refresh tokens expire in 7 days (configurable)
+- Expired tokens return `401 Unauthorized`
+
+---
+
+## Security Features
+
+### Password Security
+- Passwords hashed with bcrypt (10 salt rounds)
+- Plain-text passwords never stored or logged
+- Password reset via OTP
+
+### Rate Limiting
+- Global: 100 requests / 15 minutes per IP
+- Auth routes: 10 requests / 15 minutes per IP
+- Prevents brute force attacks
+
+### Security Headers
+- Helmet middleware for HTTP security headers
+- XSS protection
+- Clickjacking prevention
+- Content Security Policy
+
+### CORS
+- Configurable allowed origins
+- Credentials support
+- Preflight request handling
+
+### Input Validation
+- Request body validation with Joi
+- SQL injection prevention
+- XSS sanitization
+
+---
+
+## Database Models
+
+### User
+```javascript
 {
-  "success": true,
-  "data": {
-    "video": {
-      "_id": "65f3c4d5e6f7a8b9c0d3e4f5",
-      "projectId": "65f2b3c4d5e6f7a8b9c0d2e3",
-      "status": "processing",
-      "scenes": [
-        {
-          "_id": "65f4d5e6f7a8b9c0d4e5f6a7",
-          "order": 1,
-          "script": "Welcome to our analytics dashboard...",
-          "visualPrompt": "Modern dark UI showing charts and graphs"
-        }
-      ]
-    }
-  }
+  _id: ObjectId,
+  name: String,
+  email: String (unique),
+  password: String (hashed),
+  isVerified: Boolean,
+  refreshToken: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Project
+```javascript
+{
+  _id: ObjectId,
+  userId: ObjectId (ref: User),
+  title: String,
+  topic: String,
+  style: String,
+  duration: Number,
+  status: String (draft|processing|completed|failed),
+  videoId: ObjectId (ref: Video),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Video
+```javascript
+{
+  _id: ObjectId,
+  projectId: ObjectId (ref: Project),
+  userId: ObjectId (ref: User),
+  status: String (pending|processing|completed|failed),
+  cloudinaryUrl: String,
+  duration: Number,
+  scenes: [ObjectId] (ref: Scene),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Scene
+```javascript
+{
+  _id: ObjectId,
+  videoId: ObjectId (ref: Video),
+  order: Number,
+  script: String,
+  visualPrompt: String,
+  audioUrl: String,
+  clipUrl: String,
+  status: String (pending|processing|completed|failed),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### EditHistory
+```javascript
+{
+  _id: ObjectId,
+  sceneId: ObjectId (ref: Scene),
+  userId: ObjectId (ref: User),
+  changeType: String,
+  before: Object,
+  after: Object,
+  createdAt: Date
 }
 ```
 
 ---
 
-#### `POST /api/videos/upload`
+## Error Handling
 
-Upload an existing video file (multipart/form-data).
+### Error Response Format
 
-**Content-Type:** `multipart/form-data`  
-**Form Field:** `sourceFile` (video file, max 10MB)
+All errors follow a consistent structure:
 
-**Success Response `201`:**
 ```json
 {
-  "success": true,
-  "data": {
-    "video": {
-      "_id": "65f3c4d5e6f7a8b9c0d3e4f5",
-      "cloudinaryUrl": "https://res.cloudinary.com/...",
-      "status": "uploaded"
-    }
-  }
+  "success": false,
+  "message": "Human-readable error message",
+  "errors": ["Optional array of validation errors"]
 }
 ```
 
----
+### HTTP Status Codes
 
-#### `GET /api/videos/:id`
-
-Get video details including processing status, scenes, and Cloudinary URL.
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "video": {
-      "_id": "65f3c4d5e6f7a8b9c0d3e4f5",
-      "status": "completed",
-      "cloudinaryUrl": "https://res.cloudinary.com/...",
-      "duration": 62,
-      "scenes": [ ... ]
-    }
-  }
-}
-```
+| Code | Meaning |
+|---|---|
+| `200` | Success |
+| `201` | Created |
+| `400` | Bad request / validation error |
+| `401` | Unauthorized (missing/invalid token) |
+| `403` | Forbidden (insufficient permissions) |
+| `404` | Resource not found |
+| `409` | Conflict (e.g., duplicate email) |
+| `429` | Too many requests (rate limited) |
+| `500` | Internal server error |
 
 ---
 
-### 4. Scene APIs
+## Testing
 
-**Base:** `/api/scenes`  
-**Auth required:** ✅ All routes
-
----
-
-#### `GET /api/scenes/video/:videoId`
-
-Fetch all scenes for a given video, ordered by scene number.
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "scenes": [
-      {
-        "_id": "65f4d5e6f7a8b9c0d4e5f6a7",
-        "videoId": "65f3c4d5e6f7a8b9c0d3e4f5",
-        "order": 1,
-        "script": "Welcome to ClipCrafters...",
-        "visualPrompt": "Futuristic AI interface",
-        "audioUrl": "https://res.cloudinary.com/.../audio.mp3",
-        "clipUrl": "https://res.cloudinary.com/.../scene1.mp4",
-        "status": "completed"
-      }
-    ]
-  }
-}
-```
-
----
-
-#### `PUT /api/scenes/:sceneId`
-
-Update a scene's script or visual prompt (triggers re-generation if needed).
-
-**Request Body:**
-```json
-{
-  "script": "Updated script text for this scene",
-  "visualPrompt": "Bright modern office with people collaborating"
-}
-```
-
----
-
-### 5. Edit History APIs
-
-**Base:** `/api/edits`  
-**Auth required:** ✅ All routes
-
----
-
-#### `POST /api/edits/create`
-
-Record an edit action performed on a scene.
-
-**Request Body:**
-```json
-{
-  "sceneId": "65f4d5e6f7a8b9c0d4e5f6a7",
-  "changeType": "script_update",
-  "before": { "script": "Old script text" },
-  "after": { "script": "New script text" }
-}
-```
-
----
-
-#### `GET /api/edits/scene/:sceneId`
-
-Get full edit history for a specific scene (undo/redo support).
-
-**Success Response `200`:**
-```json
-{
-  "success": true,
-  "data": {
-    "edits": [
-      {
-        "_id": "65f5e6f7a8b9c0d5e6f7a8b9",
-        "sceneId": "65f4d5e6f7a8b9c0d4e5f6a7",
-        "changeType": "script_update",
-        "before": { "script": "Old script" },
-        "after": { "script": "New script" },
-        "createdAt": "2026-03-05T18:30:00.000Z"
-      }
-    ]
-  }
-}
-```
-
----
-
-### 6. System APIs
-
----
-
-#### `GET /api/health`
-
-Server health check — no auth required.
-
-**Response `200`:**
-```json
-{
-  "success": true,
-  "message": "ClipCrafters API is running",
-  "timestamp": "2026-03-05T18:00:00.000Z",
-  "uptime": 3600,
-  "environment": "development"
-}
-```
-
----
-
-## Request & Response Examples
-
-### Using curl
+### Run Tests
 
 ```bash
+npm test
+```
+
+### Test Coverage
+
+```bash
+npm run test:coverage
+```
+
+### API Testing with curl
+
+```bash
+# Health check
+curl http://localhost:5001/api/health
+
 # Register
 curl -X POST http://localhost:5001/api/auth/register \
   -H "Content-Type: application/json" \
@@ -923,105 +595,43 @@ curl -X POST http://localhost:5001/api/auth/login \
 # Get projects (replace TOKEN)
 curl http://localhost:5001/api/projects \
   -H "Authorization: Bearer TOKEN"
-
-# Create project
-curl -X POST http://localhost:5001/api/projects/create \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"title":"My Video","topic":"Explain machine learning in 60 seconds"}'
-
-# Generate video
-curl -X POST http://localhost:5001/api/videos/generate \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"projectId":"PROJECT_ID_HERE"}'
-```
-
-### Using JavaScript (Axios)
-
-```js
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
-  headers: { Authorization: `Bearer ${localStorage.getItem('cc_token')}` }
-});
-
-// Create project
-const { data } = await api.post('/projects/create', {
-  title: 'My Video',
-  topic: 'Explain AI to beginners'
-});
-
-// Generate video
-await api.post('/videos/generate', { projectId: data.data.project._id });
 ```
 
 ---
 
-## Middlewares
+## Development Tips
 
-| Middleware | Purpose |
-|---|---|
-| `protect` | Verifies JWT, attaches `req.user` |
-| `authLimiter` | 10 req / 15 min on auth routes |
-| `apiLimiter` | 100 req / 15 min globally |
-| `upload` | Multer for `multipart/form-data` |
-| `globalErrorHandler` | Catches all thrown errors, returns standard JSON |
-| `notFound` | Returns `404` for unknown routes |
+### Hot Reload
+
+The dev server uses nodemon for automatic restarts on file changes.
+
+### Logging
+
+Winston logger is configured for:
+- Console output in development
+- File output in production
+- Error tracking
+
+### Database Seeding
+
+```bash
+npm run seed
+```
+
+### Database Reset
+
+```bash
+npm run db:reset
+```
 
 ---
 
-## Error Handling
+## Contributing
 
-All errors follow this schema:
-
-```json
-{
-  "success": false,
-  "message": "Human readable error message",
-  "errors": [ "Optional array of field-level validation errors" ]
-}
-```
-
-| Status | Meaning |
-|---|---|
-| `400` | Bad request / validation failed |
-| `401` | Unauthenticated (missing/invalid token) |
-| `403` | Forbidden (not owner of resource) |
-| `404` | Resource not found |
-| `409` | Conflict (e.g. duplicate email) |
-| `429` | Too many requests |
-| `500` | Internal server error |
+See the main [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 
 ---
 
-## Models
+## License
 
-### User
-```
-_id, name, email, password (bcrypt), isVerified, refreshToken, createdAt
-```
-
-### Project
-```
-_id, userId (ref User), title, topic, style, duration, status, videoId (ref Video), createdAt
-```
-
-### Video
-```
-_id, projectId, userId, status (pending|processing|completed|failed),
-cloudinaryUrl, duration, scenes (ref Scene[]), createdAt
-```
-
-### Scene
-```
-_id, videoId, order, script, visualPrompt,
-audioUrl, clipUrl, status, createdAt
-```
-
-### EditHistory
-```
-_id, sceneId, userId, changeType, before, after, createdAt
-```
->>>>>>> 76d35d6aef2682511949bd646d8b8cf3812391a4
+MIT License - see [LICENSE](../LICENSE) for details.
