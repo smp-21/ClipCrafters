@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { useScrollY } from '../../hooks/index.js';
 import { getInitials } from '../../utils/formatters.js';
 import ThemeToggle from '../ui/ThemeToggle.jsx';
+import SnowfallToggle from '../ui/SnowfallToggle.jsx';
 
 const Logo = () => (
   <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
@@ -26,7 +27,7 @@ const Logo = () => (
   </Link>
 );
 
-export default function Navbar() {
+export default function Navbar({ snowfallEnabled, setSnowfallEnabled }) {
   const { user, isAuthenticated, logout } = useAuth();
   const scrollY = useScrollY();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -100,6 +101,7 @@ export default function Navbar() {
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 'auto' }}>
           <div className="desktop-only"><ThemeToggle /></div>
+          <div className="desktop-only"><SnowfallToggle onToggle={setSnowfallEnabled} /></div>
 
           {isAuthenticated ? (
             <div ref={dropRef} style={{ position: 'relative' }}>

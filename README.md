@@ -41,7 +41,7 @@
 ClipCrafters is a comprehensive AI-powered platform that combines three powerful services:
 
 ### 🎨 Frontend (React 18 + Vite)
-Modern, responsive single-page application providing an intuitive interface for video creation and management.
+Modern, responsive single-page application with stunning UI/UX featuring custom cursor, snowfall effects, 3D CSS animations, and smooth page transitions.
 
 ### 🔧 Backend (Node.js + Express)
 RESTful API handling user authentication, project management, video operations, and orchestration between services.
@@ -151,6 +151,7 @@ sequenceDiagram
 | React Router | 6.x | Client-side routing |
 | Axios | 1.x | HTTP client with interceptors |
 | Framer Motion | 10.x | Animation library |
+| React Snowfall | Latest | Customizable snowfall effects |
 | Lucide React | Latest | Icon library |
 
 ### Backend Stack
@@ -524,6 +525,18 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ---
 
 ## ✨ Features
+
+### 🎨 UI/UX Features
+
+- **Custom Cursor** - Animated cursor with particle trails and glow effects
+- **Snowfall Effects** - Customizable snowfall with toggle button
+- **3D CSS Effects** - Depth layers, floating animations, and perspective transforms
+- **Page Transitions** - Smooth slow-motion transitions between pages
+- **Hover Effects** - Zoom, glow, border animations, and 3D lift effects
+- **Modern Theme** - Indigo/purple gradient color scheme with light/dark modes
+- **Glass Morphism** - Frosted glass cards with backdrop blur
+- **Responsive Design** - Mobile-first approach with full responsive support
+- **Performance Optimized** - React.memo, useCallback, useMemo, and RAF optimization
 
 ### 📄 Document Processing (RAG Pipeline)
 

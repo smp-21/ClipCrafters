@@ -8,10 +8,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        gold: {
-          primary: 'var(--gold-primary)',
-          light: 'var(--gold-light)',
-          dark: 'var(--gold-dark)',
+        primary: {
+          DEFAULT: 'var(--primary)',
+          light: 'var(--primary-light)',
+          dark: 'var(--primary-dark)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          light: 'var(--accent-light)',
+          dark: 'var(--accent-dark)',
         },
       },
       fontFamily: {

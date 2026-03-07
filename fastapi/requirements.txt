@@ -34,3 +34,11 @@ edge-tts>=6.1.12  # Fallback TTS when Murf AI is unavailable
 moviepy>=1.0.3
 aiohttp>=3.9.3
 httpx>=0.27.0
+
+# Video Processing Dependencies (Optional - using FFmpeg instead)
+# opencv-python>=4.8.0  # Not required - FFmpeg handles all video processing
+# openai-whisper>=20231117  # Optional - for script extraction from video
+# SpeechRecognition>=3.10.0  # Optional - fallback speech recognition
+
+# Mock Processor Dependencies
+Pillow>=10.0.0  # Required for mock video processor when FFmpeg unavailable

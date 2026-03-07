@@ -181,7 +181,16 @@ export default function Profile() {
     <motion.div {...pageTransition} style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
       <main style={{ flex: 1, marginLeft: 240, padding: '32px', maxWidth: 800 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', fontWeight: 800, marginBottom: 32 }}>Account Settings</h1>
+        <h1 style={{ 
+          fontFamily: 'var(--font-display)', 
+          fontSize: '1.8rem', 
+          fontWeight: 800, 
+          marginBottom: 32,
+          color: 'var(--text-primary)',
+          textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+        }}>
+          Account Settings
+        </h1>
 
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {/* Avatar & Name */}
@@ -275,7 +284,15 @@ export default function Profile() {
 
           {/* Account Info */}
           <motion.div variants={fadeInUp} className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, marginBottom: 16 }}>Account Information</h3>
+            <h3 style={{ 
+              fontFamily: 'var(--font-display)', 
+              fontSize: '1.1rem', 
+              fontWeight: 700, 
+              marginBottom: 16,
+              color: 'var(--text-primary)'
+            }}>
+              Account Information
+            </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {[
                 { label: 'Full Name', value: user?.name },
@@ -295,8 +312,14 @@ export default function Profile() {
           {/* OTP Verification */}
           {user?.isVerified === false && (
             <motion.div variants={fadeInUp} className="glass-card" style={{ padding: '24px', border: '1px solid rgba(251,191,36,0.3)' }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, marginBottom: 8 }}>
-                <AlertCircle size={18} color="#fbbf24" style={{ marginRight: 8, verticalAlign: 'middle' }} />
+              <h3 style={{ 
+                fontFamily: 'var(--font-display)', 
+                fontSize: '1.1rem', 
+                fontWeight: 700, 
+                marginBottom: 8,
+                color: 'var(--text-primary)'
+              }}>
+                <AlertCircle size={18} style={{ color: '#fbbf24', marginRight: 8, verticalAlign: 'middle' }} />
                 Verify Your Email
               </h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: 16 }}>
@@ -348,7 +371,15 @@ export default function Profile() {
 
           {/* Theme */}
           <motion.div variants={fadeInUp} className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, marginBottom: 16 }}>Appearance</h3>
+            <h3 style={{ 
+              fontFamily: 'var(--font-display)', 
+              fontSize: '1.1rem', 
+              fontWeight: 700, 
+              marginBottom: 16,
+              color: 'var(--text-primary)'
+            }}>
+              Appearance
+            </h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {[
                 { key: 'dark', label: 'Dark', icon: Moon, desc: 'Cinema dark golden theme' },
@@ -366,9 +397,9 @@ export default function Profile() {
                     display: 'flex', gap: 12, alignItems: 'center',
                   }}
                 >
-                  <Icon size={20} color={theme === key ? 'var(--gold-primary)' : 'var(--text-muted)'} />
+                  <Icon size={20} style={{ color: theme === key ? 'var(--primary)' : 'var(--text-muted)' }} />
                   <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.875rem', color: theme === key ? 'var(--gold-light)' : 'var(--text-primary)' }}>{label}</div>
+                    <div style={{ fontWeight: 600, fontSize: '0.875rem', color: theme === key ? 'var(--primary-light)' : 'var(--text-primary)' }}>{label}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{desc}</div>
                   </div>
                 </button>
@@ -378,7 +409,15 @@ export default function Profile() {
 
           {/* Stats */}
           <motion.div variants={fadeInUp} className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, marginBottom: 16 }}>Your Activity</h3>
+            <h3 style={{ 
+              fontFamily: 'var(--font-display)', 
+              fontSize: '1.1rem', 
+              fontWeight: 700, 
+              marginBottom: 16,
+              color: 'var(--text-primary)'
+            }}>
+              Your Activity
+            </h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               {[
                 { label: 'Total Projects', value: stats.total },
@@ -394,8 +433,8 @@ export default function Profile() {
             {activityStats && (
               <div style={{ padding: '16px', background: 'var(--bg-elevated)', borderRadius: 10, marginBottom: 16 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                  <Activity size={16} color="var(--gold-primary)" />
-                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Activity Stats</span>
+                  <Activity size={16} style={{ color: 'var(--primary)' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>Activity Stats</span>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, fontSize: '0.8rem' }}>
                   <div><span style={{ color: 'var(--text-muted)' }}>Total Activities:</span> <strong>{activityStats.totalActivities}</strong></div>

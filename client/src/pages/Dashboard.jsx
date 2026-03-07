@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { PlusCircle, Film, Edit3, BarChart3, Search, SlidersHorizontal } from 'lucide-react';
+import { PlusCircle, Film, Edit3, BarChart3, Search, SlidersHorizontal, TrendingUp, PieChart, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { projectService } from '../services/index.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -10,6 +10,7 @@ import ProjectCard from '../components/dashboard/ProjectCard.jsx';
 import StatWidget from '../components/dashboard/StatWidget.jsx';
 import ActivityFeed from '../components/dashboard/ActivityFeed.jsx';
 import QuickActions from '../components/dashboard/QuickActions.jsx';
+import { ProjectsBarChart, StatusPieChart, ActivityLineChart } from '../components/dashboard/Charts.jsx';
 import { SkeletonCard } from '../components/ui/index.jsx';
 import { staggerContainer } from '../utils/animations.js';
 import { pageTransition } from '../utils/animations.js';
@@ -107,6 +108,53 @@ export default function Dashboard() {
         {/* Quick actions */}
         <div style={{ marginBottom: 28 }}>
           <QuickActions />
+        </div>
+
+        {/* Charts Section */}
+        <div style={{ marginBottom: 32 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, marginBottom: 20, color: 'var(--text-primary)' }}>
+            Analytics Overview
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+            {/* Bar Chart */}
+            <div className="glass-card hover-3d-lift" style={{ padding: '24px', height: '320px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                <TrendingUp size={20} style={{ color: 'var(--primary)' }} />
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                  Monthly Projects
+                </h3>
+              </div>
+              <div style={{ height: 'calc(100% - 40px)' }}>
+                <ProjectsBarChart />
+              </div>
+            </div>
+
+            {/* Pie Chart */}
+            <div className="glass-card hover-3d-lift" style={{ padding: '24px', height: '320px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                <PieChart size={20} style={{ color: 'var(--primary)' }} />
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                  Project Status
+                </h3>
+              </div>
+              <div style={{ height: 'calc(100% - 40px)' }}>
+                <StatusPieChart />
+              </div>
+            </div>
+
+            {/* Line Chart */}
+            <div className="glass-card hover-3d-lift" style={{ padding: '24px', height: '320px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                <Activity size={20} style={{ color: 'var(--primary)' }} />
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                  Weekly Activity
+                </h3>
+              </div>
+              <div style={{ height: 'calc(100% - 40px)' }}>
+                <ActivityLineChart />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Two-column layout */}

@@ -29,6 +29,7 @@ class SceneResponse(BaseModel):
     
     estimated_duration: Optional[float] = Field(None, description="Initial LLM estimate (seconds)")
     actual_duration: Optional[float] = Field(None, description="Exact length of generated audio (seconds)")
+    timestamp: Optional[float] = Field(None, description="Scene start timestamp in original video")
     
     # Asset paths relative to the storage directory or absolute paths
     audio_path: Optional[str] = Field(None, description="Path to generated TTS audio (.wav/mp3)")
@@ -65,6 +66,18 @@ class ProjectMetadata(BaseModel):
     # Timeline paths
     timeline_path: Optional[str] = Field(None, description="Path to the timeline JSON/TXT definition")
     final_video_path: Optional[str] = Field(None, description="Path to the final assembled video export")
+    
+    # Video upload fields
+    video_path: Optional[str] = Field(None, description="Path to original uploaded video")
+    video_metadata: Optional[dict] = Field(None, description="Video metadata (fps, duration, resolution, etc.)")
+    frames_dir: Optional[str] = Field(None, description="Directory containing extracted frames")
+    frame_count: Optional[int] = Field(None, description="Total number of extracted frames")
+    transcript: Optional[dict] = Field(None, description="Extracted transcript/script from video")
+    scene_timestamps: Optional[List[float]] = Field(None, description="Detected scene change timestamps")
+    rebuilt_video_path: Optional[str] = Field(None, description="Path to rebuilt video from edited frames")
+    needs_rebuild: bool = Field(False, description="Flag indicating video needs rebuilding")
+    created_at: Optional[str] = Field(None, description="ISO timestamp of project creation")
+    last_updated: Optional[str] = Field(None, description="ISO timestamp of last update")
 
 
 class AssetGenerationRequest(BaseModel):

@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Briefcase, MessageCircle, BookOpen, ChevronLeft, ChevronRight, Check, FileText, Upload, X } from 'lucide-react';
 import { projectService, videoService } from '../services/index.js';
 import { Spinner } from '../components/ui/index.jsx';
+import Sidebar from '../components/layout/Sidebar.jsx';
 import ThemeToggle from '../components/ui/ThemeToggle.jsx';
 import { pageTransition } from '../utils/animations.js';
 import { formatDurationLong } from '../utils/formatters.js';
@@ -66,37 +67,39 @@ export default function ProjectCreate() {
   };
 
   return (
-    <motion.div {...pageTransition} style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
-      {/* Header */}
-      <div style={{ padding: '20px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-default)' }}>
-        <Link to="/dashboard" className="btn-ghost btn-sm" data-cursor="pointer">
-          <ChevronLeft size={16} /> Back
-        </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {STEPS.map((s, i) => (
-            <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{
-                width: 28, height: 28, borderRadius: '50%',
-                background: i < step ? 'var(--gradient-gold)' : i === step ? 'var(--gold-subtle)' : 'var(--bg-elevated)',
-                border: i === step ? '2px solid var(--gold-primary)' : '2px solid var(--border-default)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '0.75rem', fontWeight: 700,
-                color: i < step ? '#0a0806' : i === step ? 'var(--gold-primary)' : 'var(--text-muted)',
-                flexShrink: 0, transition: 'all 0.3s',
-              }}>
-                {i < step ? <Check size={14} color="#0a0806" /> : i + 1}
+    <motion.div {...pageTransition} style={{ display: 'flex', minHeight: '100vh' }}>
+      <Sidebar />
+      <div style={{ flex: 1, marginLeft: 240, minHeight: '100vh', background: 'var(--bg-primary)' }}>
+        {/* Header */}
+        <div style={{ padding: '20px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-default)' }}>
+          <Link to="/dashboard" className="btn-ghost btn-sm" data-cursor="pointer">
+            <ChevronLeft size={16} /> Back
+          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {STEPS.map((s, i) => (
+              <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: i < step ? 'var(--gradient-primary)' : i === step ? 'var(--primary-subtle)' : 'var(--bg-elevated)',
+                  border: i === step ? '2px solid var(--primary)' : '2px solid var(--border-default)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.75rem', fontWeight: 700,
+                  color: i < step ? 'white' : i === step ? 'var(--primary)' : 'var(--text-muted)',
+                  flexShrink: 0, transition: 'all 0.3s',
+                }}>
+                  {i < step ? <Check size={14} color="white" /> : i + 1}
+                </div>
+                <span style={{ fontSize: '0.8rem', color: i === step ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: i === step ? 600 : 400 }}>
+                  {s}
+                </span>
+                {i < STEPS.length - 1 && <div style={{ width: 32, height: 1, background: i < step ? 'var(--primary)' : 'var(--border-default)' }} />}
               </div>
-              <span style={{ fontSize: '0.8rem', color: i === step ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: i === step ? 600 : 400 }}>
-                {s}
-              </span>
-              {i < STEPS.length - 1 && <div style={{ width: 32, height: 1, background: i < step ? 'var(--gold-primary)' : 'var(--border-default)' }} />}
-            </div>
-          ))}
+            ))}
+          </div>
+          <ThemeToggle size="sm" />
         </div>
-        <ThemeToggle size="sm" />
-      </div>
 
-      {/* Content */}
+        {/* Content */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 80px)', padding: '40px 24px' }}>
         <div style={{ width: '100%', maxWidth: 640 }}>
           <AnimatePresence mode="wait">
@@ -272,6 +275,8 @@ export default function ProjectCreate() {
           </div>
         </div>
       </div>
+      </div>
+      <style>{`@media (max-width: 1023px) { div[style*="marginLeft: 240px"] { margin-left: 0 !important; } }`}</style>
     </motion.div>
   );
 }

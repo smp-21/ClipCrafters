@@ -47,7 +47,11 @@ The ClipCrafters frontend is a modern React 18 single-page application built wit
 | **React Router** | 6.x | Client-side routing |
 | **Axios** | 1.x | HTTP client for API calls |
 | **Framer Motion** | 10.x | Animation library |
+| **React Snowfall** | Latest | Customizable snowfall effects |
+| **Chart.js** | Latest | Interactive charts and graphs |
+| **React-Chartjs-2** | Latest | React wrapper for Chart.js |
 | **Lucide React** | Latest | Icon library |
+| **Sonner** | Latest | Toast notifications |
 
 ---
 
@@ -187,6 +191,23 @@ Access in code via `import.meta.env.VITE_API_URL`
 
 ## Key Features
 
+### 🎨 UI/UX Features
+- **Custom Cursor** — Animated cursor with particle trails and glow effects
+- **Snowfall Effects** — Customizable snowfall with toggle button in sidebar
+- **3D CSS Effects** — Depth layers, floating animations, and perspective transforms
+- **Page Transitions** — Smooth slow-motion transitions between pages
+- **Hover Effects** — Zoom, glow, border animations, and 3D lift effects
+- **Modern Theme** — Indigo/purple gradient color scheme with light/dark modes
+- **Glass Morphism** — Frosted glass cards with backdrop blur
+- **Responsive Design** — Mobile-first approach with full responsive support
+- **Performance Optimized** — React.memo, useCallback, useMemo, and RAF optimization
+
+### 📊 Dashboard & Analytics
+- **Interactive Charts** — Bar, Pie, and Line charts with Chart.js
+- **Real-time Stats** — Project statistics and activity tracking
+- **Activity Feed** — Recent actions and updates
+- **Quick Actions** — Fast access to common tasks
+
 ### User Authentication
 - JWT-based authentication
 - Protected routes with auth guards
@@ -213,6 +234,14 @@ Access in code via `import.meta.env.VITE_API_URL`
 - Mobile-first approach
 - Adaptive layouts for all screen sizes
 - Touch-friendly interactions
+- Sidebar with collapse functionality
+- Mobile navigation drawer
+
+### Additional Pages
+- **About Us** — Company information with animations
+- **Contact** — Contact form with NIRMA University address
+- **FAQ** — Frequently asked questions with accordion
+- **Profile** — User profile management with avatar upload
 
 ---
 

@@ -1,98 +1,163 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useSpring } from 'framer-motion';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 
-export default function CustomCursor() {
-  const [isPointer, setIsPointer] = useState(false);
-  const [isText, setIsText] = useState(false);
-  const [isHidden, setIsHidden] = useState(true);
-  const mouseX = useRef(0);
-  const mouseY = useRef(0);
+const CustomCursor = memo(() => {
+  const cursorRef = useRef(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
+  const [trails, setTrails] = useState([]);
+  const [backTrails, setBackTrails] = useState([]);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const cursorPos = useRef({ x: 0, y: 0 });
+  const rafRef = useRef(null);
+  const trailHistory = useRef([]);
 
-  const outerX = useSpring(0, { stiffness: 120, damping: 20 });
-  const outerY = useSpring(0, { stiffness: 120, damping: 20 });
-  const innerX = useSpring(0, { stiffness: 800, damping: 35 });
-  const innerY = useSpring(0, { stiffness: 800, damping: 35 });
+  // Memoized event handlers
+  const handleMouseMove = useCallback((e) => {
+    mousePos.current = { x: e.clientX, y: e.clientY };
+
+    // Add front trail with throttling
+    if (Math.random() > 0.7) {
+      const trail = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+      };
+      setTrails((prev) => [...prev.slice(-10), trail]);
+    }
+
+    // Add to trail history for back trail
+    trailHistory.current.push({
+      x: e.clientX,
+      y: e.clientY,
+      time: Date.now(),
+    });
+
+    // Keep only recent history (last 500ms)
+    const now = Date.now();
+    trailHistory.current = trailHistory.current.filter(t => now - t.time < 500);
+
+    // Create back trail from history
+    if (trailHistory.current.length > 5 && Math.random() > 0.8) {
+      const oldPos = trailHistory.current[Math.floor(trailHistory.current.length / 2)];
+      const backTrail = {
+        id: Date.now() + Math.random(),
+        x: oldPos.x,
+        y: oldPos.y,
+      };
+      setBackTrails((prev) => [...prev.slice(-15), backTrail]);
+    }
+  }, []);
+
+  const handleMouseDown = useCallback(() => {
+    setIsClicking(true);
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    setIsClicking(false);
+  }, []);
+
+  const handleMouseOver = useCallback((e) => {
+    const target = e.target;
+    if (
+      target.tagName === 'BUTTON' ||
+      target.tagName === 'A' ||
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.classList.contains('btn-primary') ||
+      target.classList.contains('btn-ghost') ||
+      target.classList.contains('btn-icon') ||
+      target.closest('button') ||
+      target.closest('a')
+    ) {
+      setIsHovering(true);
+    } else {
+      setIsHovering(false);
+    }
+  }, []);
 
   useEffect(() => {
-    // Only show on pointer devices
-    if (window.matchMedia('(hover: none)').matches) return;
-
+    // Hide default cursor
     document.body.classList.add('no-cursor');
 
-    const move = (e) => {
-      mouseX.current = e.clientX;
-      mouseY.current = e.clientY;
-      outerX.set(e.clientX - 20);
-      outerY.set(e.clientY - 20);
-      innerX.set(e.clientX - 4);
-      innerY.set(e.clientY - 4);
-      setIsHidden(false);
+    // Smooth cursor animation with RAF
+    const animateCursor = () => {
+      const dx = mousePos.current.x - cursorPos.current.x;
+      const dy = mousePos.current.y - cursorPos.current.y;
+
+      cursorPos.current.x += dx * 0.15;
+      cursorPos.current.y += dy * 0.15;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${cursorPos.current.x}px, ${cursorPos.current.y}px)`;
+      }
+
+      rafRef.current = requestAnimationFrame(animateCursor);
     };
 
-    const over = (e) => {
-      const target = e.target;
-      const isPtr = target.matches('a, button, [data-cursor="pointer"], label, select, input[type=checkbox], input[type=radio]');
-      const isTxt = target.matches('input, textarea, [data-cursor="text"]');
-      setIsPointer(isPtr);
-      setIsText(isTxt);
-    };
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
 
-    const leave = () => setIsHidden(true);
-    const enter = () => setIsHidden(false);
+    rafRef.current = requestAnimationFrame(animateCursor);
 
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseover', over);
-    document.addEventListener('mouseleave', leave);
-    document.addEventListener('mouseenter', enter);
+    // Cleanup trails periodically
+    const trailCleanup = setInterval(() => {
+      setTrails((prev) => prev.slice(-5));
+      setBackTrails((prev) => prev.slice(-8));
+    }, 100);
 
     return () => {
       document.body.classList.remove('no-cursor');
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseover', over);
-      document.removeEventListener('mouseleave', leave);
-      document.removeEventListener('mouseenter', enter);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseover', handleMouseOver);
+      clearInterval(trailCleanup);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
-  }, [outerX, outerY, innerX, innerY]);
-
-  if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) return null;
+  }, [handleMouseMove, handleMouseDown, handleMouseUp, handleMouseOver]);
 
   return (
     <>
-      {/* Outer ring */}
-      <motion.div
-        style={{
-          position: 'fixed',
-          left: outerX,
-          top: outerY,
-          width: 40,
-          height: 40,
-          borderRadius: '50%',
-          border: '1.5px solid var(--gold-primary)',
-          pointerEvents: 'none',
-          zIndex: 99999,
-          mixBlendMode: 'difference',
-          opacity: isHidden ? 0 : 1,
-          scale: isPointer ? 1.8 : isText ? 0.3 : 1,
-          backgroundColor: isPointer ? 'var(--gold-glow)' : 'transparent',
-          transition: 'opacity 0.2s, scale 0.2s, background-color 0.2s',
-        }}
-      />
-      {/* Inner dot */}
-      <motion.div
-        style={{
-          position: 'fixed',
-          left: innerX,
-          top: innerY,
-          width: 8,
-          height: 8,
-          borderRadius: '50%',
-          backgroundColor: 'var(--gold-light)',
-          pointerEvents: 'none',
-          zIndex: 99999,
-          opacity: isHidden || isPointer || isText ? 0 : 1,
-          transition: 'opacity 0.2s',
-        }}
-      />
+      {/* Back trails */}
+      {backTrails.map((trail) => (
+        <div
+          key={trail.id}
+          className="cursor-back-trail"
+          style={{
+            left: trail.x,
+            top: trail.y,
+          }}
+        />
+      ))}
+
+      {/* Main cursor */}
+      <div
+        ref={cursorRef}
+        className={`custom-cursor ${isHovering ? 'hover' : ''} ${isClicking ? 'click' : ''}`}
+      >
+        <div className="cursor-dot"></div>
+        <div className="cursor-outline"></div>
+      </div>
+
+      {/* Front trails */}
+      {trails.map((trail) => (
+        <div
+          key={trail.id}
+          className="cursor-trail"
+          style={{
+            left: trail.x,
+            top: trail.y,
+          }}
+        />
+      ))}
     </>
   );
-}
+});
+
+CustomCursor.displayName = 'CustomCursor';
+
+export default CustomCursor;

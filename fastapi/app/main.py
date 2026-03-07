@@ -15,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import router as doc_router
 from app.api.video_routes import router as video_router
+from app.api.video_upload_routes import router as video_upload_router
 from app.core.config import settings
 from app.core.logger import get_logger
 
@@ -68,6 +69,7 @@ app.mount(
 # ── Mount routes ──────────────────────────────────────────────────
 app.include_router(doc_router)
 app.include_router(video_router)
+app.include_router(video_upload_router)
 
 
 # ── Root redirect to UI ──────────────────────────────────────────

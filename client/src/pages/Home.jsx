@@ -18,12 +18,16 @@ import useAnimatedCounter from '../hooks/useAnimatedCounter.js';
 
 const iconMap = { Edit3, Shield, Brain, Activity, History, Zap, Film, CheckCircle2, Layers };
 
-export default function Home() {
+export default function Home({ snowfallEnabled, setSnowfallEnabled }) {
   return (
     <PageTransition>
-      <Navbar />
+      <Navbar snowfallEnabled={snowfallEnabled} setSnowfallEnabled={setSnowfallEnabled} />
       <main>
         <HeroSection />
+        <div className="section-separator">
+          <div className="separator-line"></div>
+          <div className="separator-glow"></div>
+        </div>
         <FeaturesSection />
         <StatsSection />
         <TestimonialsSection />
